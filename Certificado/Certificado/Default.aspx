@@ -16,17 +16,17 @@
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="~/Content/loginStyles.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/StyleCert.css" type="text/css" />
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css' />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
 
 </head>
-<body >
+<body class="back">
 
     <div class="row">
-        <form runat="server">
+        <form runat="server" class="login">
 
             <asp:ScriptManager runat="server">
                 <Scripts>
@@ -56,31 +56,34 @@
                     <div class="form-group">
                         <div class="col-sm-5" style="background-color: white;">
                         
-                          
+                            <br />
+
                             <div class="form-group row">
-                                <label for="RazonSocial" class="col-sm-4 col-form-label">Razon social *</label>
+                                <label for="Nombre" class="col-sm-4 col-form-label">Nombre *</label>
                                 <div class="col-sm-8">
-                                    <asp:TextBox ID="txtbRazonSocial" runat="server" type="text" class="form-control" name="RazonSocial" placeholder="Nombre de la empresa" MaxLength="50" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
+                                    <asp:TextBox ID="txtbNombre" runat="server" type="text" class="form-control" name="Nombre" placeholder="Introduzca su(s) nombre(s)" MaxLength="50" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="DireccionFiscal" class="col-sm-4 col-form-label">Direccion fiscal *</label>
+                                <label for="Apellidos" class="col-sm-4 col-form-label">Apellidos *</label>
                                 <div class="col-sm-8">
-                                    <asp:TextBox ID="txtbDireccionFiscal" runat="server" type="text" class="form-control" name="DireccionFiscal" placeholder="Direccion fiscal de la empresa" MaxLength="100" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
+                                    <asp:TextBox ID="txtbApellidos" runat="server" type="text" class="form-control" name="Apellidos" placeholder="Introduzca sus apellidos" MaxLength="50" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="DireccionUbicacion" class="col-sm-4 col-form-label">Ubicacion fisica *</label>
+                                <label for="Telefono" class="col-sm-4 col-form-label">Telefono *</label>
                                 <div class="col-sm-8">
-                                    <asp:TextBox ID="txtbDireccionUbicacion" runat="server" type="text" class="form-control" name="DireccionUbicacion" placeholder="Direccion ubicacion de la empresa" MaxLength="100" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
+                                    <asp:TextBox ID="txtbTelefono" runat="server" type="text" class="form-control" name="Telefono" placeholder="Numero de celular" MaxLength="10" TextMode="Phone" AutoCompleteType="Disabled"></asp:TextBox>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <asp:Button ID="btnInsertar" runat="server" Text="" class="btn btn-success" center-align="true" OnClick="btnInsertar_Click" />
-                                <asp:Button ID="btnImprimirLlaves" runat="server" Text="" class="btn btn-success" center-align="true" OnClick="btnImprimir_Click" Visible="false"/>   
-                            </div>
-
+                            <br />
+                            <center>
+                                <div class="form-group row">
+                                    <asp:Button ID="btnInsertar" runat="server" Text="Certificar" class="btn btn-success" center-align="true" OnClick="btnInsertar_Click" />
+                                    <asp:Button ID="btnImprimirLlaves" runat="server" Text="Obtener llave" class="btn btn-primary" center-align="true" OnClick="btnImprimir_Click" Visible="false" />   
+                                </div>
+                            </center>
                         </div>
                     </div>
                 </div>

@@ -13,31 +13,31 @@ namespace Certificado {
     public partial class _Default {
         
         /// <summary>
-        /// Control txtbRazonSocial.
+        /// Control txtbNombre.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtbRazonSocial;
+        protected global::System.Web.UI.WebControls.TextBox txtbNombre;
         
         /// <summary>
-        /// Control txtbDireccionFiscal.
+        /// Control txtbApellidos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtbDireccionFiscal;
+        protected global::System.Web.UI.WebControls.TextBox txtbApellidos;
         
         /// <summary>
-        /// Control txtbDireccionUbicacion.
+        /// Control txtbTelefono.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtbDireccionUbicacion;
+        protected global::System.Web.UI.WebControls.TextBox txtbTelefono;
         
         /// <summary>
         /// Control btnInsertar.
