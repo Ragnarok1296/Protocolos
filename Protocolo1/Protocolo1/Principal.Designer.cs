@@ -73,7 +73,6 @@
             this.gbTiempos.TabIndex = 0;
             this.gbTiempos.TabStop = false;
             this.gbTiempos.Text = "Tiempos";
-            this.gbTiempos.Visible = false;
             // 
             // lblRContador3
             // 

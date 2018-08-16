@@ -18,13 +18,6 @@ namespace Protocolo1
 {
     public partial class Principal : Form
     {
-
-        //Variables a utilizar en los sockets
-        Socket socket;
-        IPEndPoint direccion;
-        byte[] info = new byte[255];
-        Socket escuchar;
-        int size;
         String valorRecibido;
         BigInteger resultadoOperacion;
 
@@ -48,8 +41,7 @@ namespace Protocolo1
 
         private void Principal_Load(object sender, EventArgs e)
         {
-            InitializeSender();
-            InitializeReceiver();
+            
         }
 
         private void btnEmpezar_Click(object sender, EventArgs e)
@@ -123,14 +115,14 @@ namespace Protocolo1
 
         public void Alice()
         {
+            //Generar numeros aleatorios y rectificar con euclides, asi mismo se verifica el tiempo
             start = new TimeSpan(DateTime.Now.Ticks);
-
-            //Stopwatch tiempo = Stopwatch.StartNew();
-
-            //Generar numeros aleatorios y rectificar con euclides
             numAleatorio();
+            stop = new TimeSpan(DateTime.Now.Ticks);
+            lblRContador1.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
 
-            //lblRContador3.Text = tiempo.Elapsed.TotalMilliseconds.ToString();
+            //Se inicia el contador para el envio de datos
+            start = new TimeSpan(DateTime.Now.Ticks);
 
             //Canal 0 envio de modulo(enviar)
             enviar(0);
@@ -139,43 +131,51 @@ namespace Protocolo1
             enviar(1);
 
             //Segundo canal (Recibir)
-            txtbCanal2.Text = valorRecibido;
+            txtbCanal2.Text = recibir().ToString();
 
             //Tercer canal (Enviar)
             enviar(3);
 
+            //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
-            lblRContador3.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
+            lblRContador2.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
+
+            lblRContador3.Text = (Convert.ToDouble(lblRContador1.Text) + Convert.ToDouble(lblRContador2.Text)).ToString();
         }
 
         public void Bob()
         {
-            
+
             //Canal 0 Recibir modulo(Recibir)
-            n = ToBigInteger(valorRecibido);
+            n = recibir();
 
+            //Generar numeros aleatorios y rectificar con euclides, asi mismo se verifica el tiempo
             start = new TimeSpan(DateTime.Now.Ticks);
-            //Stopwatch tiempo = Stopwatch.StartNew();
-
-            //Generar numeros aleatorios y rectificar con euclides
             numAleatorio();
+            stop = new TimeSpan(DateTime.Now.Ticks);
+            lblRContador1.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
 
-            //lblRContador3.Text = tiempo.Elapsed.TotalMilliseconds.ToString();
+            //Se inicia el contador para el envio de datos
+            start = new TimeSpan(DateTime.Now.Ticks);
 
             //Primer canal (recibir)
-            txtbCanal1.Text = valorRecibido;
+            txtbCanal1.Text = recibir().ToString();
 
             //Segundo canal (Enviar)
             enviar(2);
 
             //Tercer canal (recibir)
-            BigInteger aux = ToBigInteger(valorRecibido);
+            BigInteger aux = recibir();
+
+            //Se obtiene Na
             na = (aux * kb_inv) % n;
             txtbCanal3.Text = aux.ToString();
 
+            //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
-            lblRContador3.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
-            
+            lblRContador2.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
+
+            lblRContador3.Text = (Convert.ToDouble(lblRContador1.Text) + Convert.ToDouble(lblRContador2.Text)).ToString();
         }
 
         private void numAleatorio()
@@ -295,87 +295,14 @@ namespace Protocolo1
 
 
         #region Sockets
-
-        delegate void AddMessage(string message);
-
-        const int port = 54545;
-        const string broadcastAddress = "255.255.255.255";
-
-        UdpClient receivingClient;
-        UdpClient sendingClient;
-
-        Thread receivingThread;
-
-        private void InitializeSender()
-        {
-            sendingClient = new UdpClient(broadcastAddress, port);
-            sendingClient.EnableBroadcast = true;
-        }
-
-        private void InitializeReceiver()
-        {
-            receivingClient = new UdpClient(port);
-
-            ThreadStart start = new ThreadStart(Receiver);
-            receivingThread = new Thread(start);
-            receivingThread.IsBackground = true;
-            receivingThread.Start();
-        }
-
-        private void Receiver()
-        {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
-            AddMessage messageDelegate = MessageReceived;
-
-            bool bandera = true;
-
-            while (bandera)
-            {
-                byte[] data = receivingClient.Receive(ref endPoint);
-                string message = Encoding.ASCII.GetString(data);
-                
-
-                Invoke(messageDelegate, message);
-            }
-        }
-
-        private void MessageReceived(string message)
-        {
-            valorRecibido = message;
-        }
-
-        private void enviar(int canal)
-        {
-            if (canal == 0)
-                resultadoOperacion = n;
-            else if (canal == 1)
-                resultadoOperacion = (ka * na) % n; //Cambiar por el valor de 256 bits
-            else if (canal == 2)
-                resultadoOperacion = (ToBigInteger(valorRecibido) * kb) % n; //Cambiar por el valor de 256 bits
-            else if (canal == 3)
-                resultadoOperacion = (ToBigInteger(valorRecibido) * ka_inv) % n; //Cambiar por el valor de 256 bits
-
-
-            if (!string.IsNullOrEmpty(resultadoOperacion.ToString()))
-            {
-                string toSend = resultadoOperacion.ToString();
-                byte[] data = Encoding.ASCII.GetBytes(toSend);
-                sendingClient.Send(data, data.Length);
-            }
-
-        }
-
-
-
-
-
-        /*
         
         private void enviar(int canal)
         {
-            Thread.Sleep(4);
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            direccion = new IPEndPoint(IPAddress.Parse(txtbIP.Text), 8000);
+            byte[] info = new byte[255];
+
+            Thread.Sleep(10);
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint direccion = new IPEndPoint(IPAddress.Parse(txtbIP.Text), 8000);
 
             if (canal == 0)
                 resultadoOperacion = n;
@@ -395,14 +322,17 @@ namespace Protocolo1
 
         private BigInteger recibir()
         {
-            Thread.Sleep(2);
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            direccion = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
+            valorRecibido = "";
+            byte[] info = new byte[255];
+            Socket escuchar;
+            int size;
+
+            Thread.Sleep(5);
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint direccion = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8000);
 
             socket.Bind(direccion);
             socket.Listen(1);
-            gbTiempos.Visible = true;
-
 
             escuchar = socket.Accept();
             size = escuchar.Receive(info, 0, info.Length, 0);
@@ -412,7 +342,7 @@ namespace Protocolo1
             socket.Close();
 
             return ToBigInteger(valorRecibido) ;
-        }*/
+        }
 
         public BigInteger ToBigInteger(string value)
         {
