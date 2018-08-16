@@ -46,6 +46,7 @@ namespace Protocolo1
         {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
+            this.Text = "Protocolo basico ("+ ipAddress +")";
         }
 
         private void btnEmpezar_Click(object sender, EventArgs e)
