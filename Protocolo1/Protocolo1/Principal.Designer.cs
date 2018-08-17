@@ -43,19 +43,7 @@
             this.lblBits = new System.Windows.Forms.Label();
             this.cbBits = new System.Windows.Forms.ComboBox();
             this.txtbNa = new System.Windows.Forms.TextBox();
-            this.txtbN = new System.Windows.Forms.TextBox();
-            this.txtbKaKb = new System.Windows.Forms.TextBox();
-            this.txtbKaKbInv = new System.Windows.Forms.TextBox();
-            this.lblN = new System.Windows.Forms.Label();
-            this.lblKaKb = new System.Windows.Forms.Label();
             this.lblNa = new System.Windows.Forms.Label();
-            this.lblKaKbInv = new System.Windows.Forms.Label();
-            this.lblCanal1 = new System.Windows.Forms.Label();
-            this.txtbCanal1 = new System.Windows.Forms.TextBox();
-            this.txtbCanal2 = new System.Windows.Forms.TextBox();
-            this.lblCanal2 = new System.Windows.Forms.Label();
-            this.txtbCanal3 = new System.Windows.Forms.TextBox();
-            this.lblCanal3 = new System.Windows.Forms.Label();
             this.gbTiempos.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -205,142 +193,28 @@
             // 
             // txtbNa
             // 
-            this.txtbNa.Location = new System.Drawing.Point(385, 309);
+            this.txtbNa.Location = new System.Drawing.Point(26, 385);
             this.txtbNa.Multiline = true;
             this.txtbNa.Name = "txtbNa";
-            this.txtbNa.Size = new System.Drawing.Size(295, 53);
+            this.txtbNa.Size = new System.Drawing.Size(326, 53);
             this.txtbNa.TabIndex = 8;
-            // 
-            // txtbN
-            // 
-            this.txtbN.Location = new System.Drawing.Point(385, 34);
-            this.txtbN.Multiline = true;
-            this.txtbN.Name = "txtbN";
-            this.txtbN.Size = new System.Drawing.Size(295, 53);
-            this.txtbN.TabIndex = 9;
-            // 
-            // txtbKaKb
-            // 
-            this.txtbKaKb.Location = new System.Drawing.Point(385, 127);
-            this.txtbKaKb.Multiline = true;
-            this.txtbKaKb.Name = "txtbKaKb";
-            this.txtbKaKb.Size = new System.Drawing.Size(295, 53);
-            this.txtbKaKb.TabIndex = 10;
-            // 
-            // txtbKaKbInv
-            // 
-            this.txtbKaKbInv.Location = new System.Drawing.Point(385, 215);
-            this.txtbKaKbInv.Multiline = true;
-            this.txtbKaKbInv.Name = "txtbKaKbInv";
-            this.txtbKaKbInv.Size = new System.Drawing.Size(295, 53);
-            this.txtbKaKbInv.TabIndex = 11;
-            // 
-            // lblN
-            // 
-            this.lblN.AutoSize = true;
-            this.lblN.Location = new System.Drawing.Point(382, 18);
-            this.lblN.Name = "lblN";
-            this.lblN.Size = new System.Drawing.Size(15, 13);
-            this.lblN.TabIndex = 12;
-            this.lblN.Text = "N";
-            // 
-            // lblKaKb
-            // 
-            this.lblKaKb.AutoSize = true;
-            this.lblKaKb.Location = new System.Drawing.Point(382, 111);
-            this.lblKaKb.Name = "lblKaKb";
-            this.lblKaKb.Size = new System.Drawing.Size(45, 13);
-            this.lblKaKb.TabIndex = 13;
-            this.lblKaKb.Text = "Ka o Kb";
             // 
             // lblNa
             // 
             this.lblNa.AutoSize = true;
-            this.lblNa.Location = new System.Drawing.Point(382, 293);
+            this.lblNa.Location = new System.Drawing.Point(23, 369);
             this.lblNa.Name = "lblNa";
             this.lblNa.Size = new System.Drawing.Size(21, 13);
             this.lblNa.TabIndex = 14;
             this.lblNa.Text = "Na";
             // 
-            // lblKaKbInv
-            // 
-            this.lblKaKbInv.AutoSize = true;
-            this.lblKaKbInv.Location = new System.Drawing.Point(382, 199);
-            this.lblKaKbInv.Name = "lblKaKbInv";
-            this.lblKaKbInv.Size = new System.Drawing.Size(82, 13);
-            this.lblKaKbInv.TabIndex = 15;
-            this.lblKaKbInv.Text = "Ka o Kb inversa";
-            // 
-            // lblCanal1
-            // 
-            this.lblCanal1.AutoSize = true;
-            this.lblCanal1.Location = new System.Drawing.Point(708, 18);
-            this.lblCanal1.Name = "lblCanal1";
-            this.lblCanal1.Size = new System.Drawing.Size(43, 13);
-            this.lblCanal1.TabIndex = 16;
-            this.lblCanal1.Text = "Canal 1";
-            // 
-            // txtbCanal1
-            // 
-            this.txtbCanal1.Location = new System.Drawing.Point(711, 34);
-            this.txtbCanal1.Multiline = true;
-            this.txtbCanal1.Name = "txtbCanal1";
-            this.txtbCanal1.Size = new System.Drawing.Size(295, 53);
-            this.txtbCanal1.TabIndex = 17;
-            // 
-            // txtbCanal2
-            // 
-            this.txtbCanal2.Location = new System.Drawing.Point(711, 127);
-            this.txtbCanal2.Multiline = true;
-            this.txtbCanal2.Name = "txtbCanal2";
-            this.txtbCanal2.Size = new System.Drawing.Size(295, 53);
-            this.txtbCanal2.TabIndex = 19;
-            // 
-            // lblCanal2
-            // 
-            this.lblCanal2.AutoSize = true;
-            this.lblCanal2.Location = new System.Drawing.Point(708, 111);
-            this.lblCanal2.Name = "lblCanal2";
-            this.lblCanal2.Size = new System.Drawing.Size(43, 13);
-            this.lblCanal2.TabIndex = 18;
-            this.lblCanal2.Text = "Canal 2";
-            // 
-            // txtbCanal3
-            // 
-            this.txtbCanal3.Location = new System.Drawing.Point(711, 215);
-            this.txtbCanal3.Multiline = true;
-            this.txtbCanal3.Name = "txtbCanal3";
-            this.txtbCanal3.Size = new System.Drawing.Size(295, 53);
-            this.txtbCanal3.TabIndex = 21;
-            // 
-            // lblCanal3
-            // 
-            this.lblCanal3.AutoSize = true;
-            this.lblCanal3.Location = new System.Drawing.Point(708, 199);
-            this.lblCanal3.Name = "lblCanal3";
-            this.lblCanal3.Size = new System.Drawing.Size(43, 13);
-            this.lblCanal3.TabIndex = 20;
-            this.lblCanal3.Text = "Canal 3";
-            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1027, 380);
-            this.Controls.Add(this.txtbCanal3);
-            this.Controls.Add(this.lblCanal3);
-            this.Controls.Add(this.txtbCanal2);
-            this.Controls.Add(this.lblCanal2);
-            this.Controls.Add(this.txtbCanal1);
-            this.Controls.Add(this.lblCanal1);
-            this.Controls.Add(this.lblKaKbInv);
+            this.ClientSize = new System.Drawing.Size(379, 453);
             this.Controls.Add(this.lblNa);
-            this.Controls.Add(this.lblKaKb);
-            this.Controls.Add(this.lblN);
-            this.Controls.Add(this.txtbKaKbInv);
-            this.Controls.Add(this.txtbKaKb);
             this.Controls.Add(this.txtbNa);
-            this.Controls.Add(this.txtbN);
             this.Controls.Add(this.cbBits);
             this.Controls.Add(this.lblBits);
             this.Controls.Add(this.btnEmpezar);
@@ -376,18 +250,6 @@
         private System.Windows.Forms.Label lblBits;
         private System.Windows.Forms.ComboBox cbBits;
         private System.Windows.Forms.TextBox txtbNa;
-        private System.Windows.Forms.TextBox txtbN;
-        private System.Windows.Forms.TextBox txtbKaKb;
-        private System.Windows.Forms.TextBox txtbKaKbInv;
-        private System.Windows.Forms.Label lblN;
-        private System.Windows.Forms.Label lblKaKb;
         private System.Windows.Forms.Label lblNa;
-        private System.Windows.Forms.Label lblKaKbInv;
-        private System.Windows.Forms.Label lblCanal1;
-        private System.Windows.Forms.TextBox txtbCanal1;
-        private System.Windows.Forms.TextBox txtbCanal2;
-        private System.Windows.Forms.Label lblCanal2;
-        private System.Windows.Forms.TextBox txtbCanal3;
-        private System.Windows.Forms.Label lblCanal3;
     }
 }
