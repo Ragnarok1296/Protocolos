@@ -28,13 +28,3 @@ C:\Users\halco\OneDrive\Escritorio\Protocolos\Protocolo1\Protocolo1\obj\Debug\Pr
 C:\Users\halco\OneDrive\Escritorio\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.csproj.CoreCompileInputs.cache
 C:\Users\halco\OneDrive\Escritorio\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.exe
 C:\Users\halco\OneDrive\Escritorio\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.pdb
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\bin\Debug\Protocolo1.exe.config
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\bin\Debug\Protocolo1.exe
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\bin\Debug\Protocolo1.pdb
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.csprojAssemblyReference.cache
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.Principal.resources
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.Properties.Resources.resources
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.csproj.GenerateResource.cache
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.csproj.CoreCompileInputs.cache
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.exe
-C:\Users\HP G62\Desktop\Documentos Monse\9° Cuatrimestre\Seguridad Informática\Protocolos\Protocolos\Protocolo1\Protocolo1\obj\Debug\Protocolo1.pdb

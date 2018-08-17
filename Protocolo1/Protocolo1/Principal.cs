@@ -46,7 +46,7 @@ namespace Protocolo1
         {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
-            label1.Text = "Protocolo basico ("+ ipAddress +")";
+            this.Text = "Protocolo basico ("+ ipAddress +")";
         }
 
         private void btnEmpezar_Click(object sender, EventArgs e)
@@ -58,6 +58,7 @@ namespace Protocolo1
                 protocolo();
                 btnEmpezar.Enabled = true;
             }
+
         }
 
         private void cbCoS_SelectedIndexChanged(object sender, EventArgs e)
@@ -78,7 +79,8 @@ namespace Protocolo1
                 lblIP.Text = "IP de Alice:";
                 lblKaKb.Text = "Kb";
                 lblKaKbInv.Text = "Kb Inversa";
-            }                
+            }
+                
         }
 
         #region Protocolo
@@ -360,10 +362,5 @@ namespace Protocolo1
         }
 
         #endregion
-
-        private void pbxCerrar_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
     }
 }

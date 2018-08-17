@@ -61,7 +61,7 @@ namespace Protocolo1
             operaciones = new Operaciones();
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
-            label1.Text = "Protocolo llave publica (" + ipAddress + ")";
+            this.Text = "Protocolo llave publica (" + ipAddress + ")";
         }
 
         private void btnEmpezar_Click(object sender, EventArgs e)
@@ -411,11 +411,6 @@ namespace Protocolo1
 
             }
                 
-        }
-
-        private void pbxCerrar_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
