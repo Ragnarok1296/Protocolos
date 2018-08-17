@@ -1,22 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Numerics;
+using System.Diagnostics;
+using Certificado.Modelos;
 using System.IO;
-using Protocolo1.WSOperaciones;
-using Newtonsoft.Json;
 
 namespace Protocolo1
 {
     public partial class Principal : Form
     {
-        WSOperacionesSoapClient operaciones;
+        Operaciones operaciones;
 
         String valorRecibido;
         BigInteger resultadoOperacion;
@@ -40,13 +44,7 @@ namespace Protocolo1
         BigInteger llavePublica1Contrario;
         BigInteger llavePublica2Contrario;
 
-        BigInteger R0;
-        BigInteger R1;
-        BigInteger R2;
-        BigInteger R3;
-        BigInteger R4;
-        BigInteger R5;
-        BigInteger R6;
+        BigInteger resultadoFinal;
         //N es un numero no primo 
         //ka y kb pueden ser negativos 
 
@@ -60,7 +58,7 @@ namespace Protocolo1
 
         private void Principal_Load(object sender, EventArgs e)
         {
-            operaciones = new WSOperacionesSoapClient();
+            operaciones = new Operaciones();
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
             label1.Text = "Protocolo llave publica (" + ipAddress + ")";
@@ -84,43 +82,34 @@ namespace Protocolo1
         {
             try
             {
-                if (!operaciones.VerificarCertificado(txtbTelefono.Text))
-                {
-                    MessageBox.Show("Esta persona no tiene una verificacion adecuada");
-                    return;
-                }
-                
-
                 modulo = ToBigInteger(operaciones.obtenerModulo(1));
-                
-                DataTable dt = (DataTable)JsonConvert.DeserializeObject(operaciones.obtenerLlavesPublica(txtbTelefono.Text), typeof(DataTable));
-                
-                if(dt.Rows.Count == 0) {
-                    MessageBox.Show("Esta persona no esta certificada");
-                    return;
-                }
 
+                DataTable dt = operaciones.obtenerLlavesPublica(txtbTelefono.Text);
+
+                n = ToBigInteger(dt.Rows[0].ItemArray[0].ToString());
                 llavePublica1Contrario = ToBigInteger(dt.Rows[0].ItemArray[0].ToString());
-                llavePublica2Contrario = ToBigInteger(dt.Rows[1].ItemArray[0].ToString());
-                
+                llavePublica2Contrario = ToBigInteger(dt.Rows[0].ItemArray[0].ToString());
 
-                Euclides.moduloInverso(modulo, k1);
+
+                Euclides.euclidesExtendido(modulo, k1);
                 k1_inv = Euclides.inv;
-                Euclides.moduloInverso(modulo, k2);
+                Euclides.euclidesExtendido(modulo, k2);
                 k2_inv = Euclides.inv;
-                Euclides.moduloInverso(modulo, k3);
+                Euclides.euclidesExtendido(modulo, k3);
                 k3_inv = Euclides.inv;
-                
+
+
                 if (cbCoS.SelectedIndex == 0)
                 {
                     Emisor();
 
-                    
+                    txtbResultado.Text = resultadoFinal.ToString();
                 }
                 else if (cbCoS.SelectedIndex == 1)
                 {
                     Receptor();
-                    
+
+                    txtbResultado.Text = resultadoFinal.ToString();
                 }
                 
             }
@@ -146,10 +135,7 @@ namespace Protocolo1
             enviar(1);
 
             //Segundo canal (Recibir)
-            R0 = recibir();
-
-            R1 = (R0 * llavePublica1Contrario) % modulo;
-            R2 = (R0 * llavePublica2Contrario) % modulo;
+            recibir();
 
             //Tercer canal (Enviar)
             enviar(3);
@@ -158,19 +144,14 @@ namespace Protocolo1
             enviar(4);
 
             //quinto canal (Recibir)
-            R3 = recibir();
-
-            R5 = (R3 * R1 * k2 * k3 ) % modulo;
+            BigInteger valorRecibido1 = recibir();
 
             //sexto canal (Recibir)
-            R4 = recibir();
+            BigInteger valorRecibido2 = recibir();
 
-            R6 = (R4 * R2 * k2 * k3) % modulo;
+            if(valorRecibido1 == valorRecibido2)
+                resultadoFinal = ((valorRecibido1 * m2 * n) % modulo);
 
-            if (R5 == R6)
-                R5 = ((R6 * m2 * n) % modulo);
-
-            txtbResultado.Text = R5.ToString();
 
             //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
@@ -191,23 +172,16 @@ namespace Protocolo1
             start = new TimeSpan(DateTime.Now.Ticks);
 
             //Canal 1 (recibir)
-            R0 = recibir();
+            recibir();
 
-            R1 = (R0 * llavePublica1Contrario) % modulo;
-            R2 = (R0 * llavePublica2Contrario) % modulo;
-        
             //segundo canal (Enviar)
             enviar(2);
 
             //quinto canal (Recibir)
-            R3 = recibir();
-
-            
+            BigInteger valorRecibido1 = recibir();
 
             //sexto canal (Recibir)
-            R4 = recibir();
-
-            
+            BigInteger valorRecibido2 = recibir();
 
             //quinto canal (Enviar)
             enviar(5);
@@ -215,13 +189,8 @@ namespace Protocolo1
             //sexto canal (Enviar)
             enviar(6);
 
-            R5 = (R3 * R1 * k2 * k3) % modulo;
-            R6 = (R4 * R2 * k2 * k3) % modulo;
-
-            if (R5 == R6)
-                R5 = ((R6 * m2 * n) % modulo);
-
-            txtbResultado.Text = R5.ToString();
+            if (valorRecibido1 == valorRecibido2)
+                resultadoFinal = ((valorRecibido1 * m2 * n) % modulo);
 
             //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
@@ -232,16 +201,46 @@ namespace Protocolo1
 
         private void numAleatorio()
         {
-            // Se genera na que es un no invertible
-            do {
-                m1 = RandomBigInteger(2, modulo);
-            } while (Euclides.moduloInverso(modulo, m1));
+            //if (cbCoS.SelectedIndex == 0) {
+                
+                
+                
+                // Se genera na que es un no invertible
+                do {
+                    m1 = RandomBigInteger(2, modulo);
+                } while (Euclides.moduloInverso(modulo, m1));
 
 
-            // Se genera na que es un no invertible
-            do {
-                m2 = RandomBigInteger(2, modulo);
-            } while (Euclides.moduloInverso(modulo, m2));
+                // Se genera na que es un no invertible
+                do {
+                    m2 = RandomBigInteger(2, modulo);
+                } while (Euclides.moduloInverso(modulo, m2));
+                
+                
+            /*}
+            else if (cbCoS.SelectedIndex == 1) {
+                //Genrar nb (No inversible)
+                do
+                {
+                    nb = RandomBigInteger(2, n);
+                } while (Euclides.moduloInverso(n, nb));
+
+                bool bandera;
+                
+                // Se genera kb que es un invertible
+                do
+                {
+                    kb = RandomBigInteger(2, n);
+
+                    bandera = Euclides.moduloInverso(n, kb);
+                    
+                        kb_inv = Euclides.inv;
+
+                } while (!bandera);
+                
+                
+            }*/
+
         }
         
         private String binario(int bits)
@@ -327,17 +326,17 @@ namespace Protocolo1
 
             
             if (canal == 1)
-                resultadoOperacion = (m1 * k2_inv * k3_inv) % modulo; //Emisor
+                resultadoOperacion = (m1 * k2_inv * k3_inv) % modulo; //Cambiar por el valor de 256 bits
             else if (canal == 2)
-                resultadoOperacion = (m1 * k2_inv * k3_inv) % modulo; //Receptor
+                resultadoOperacion = (m1 * k2_inv * k3_inv) % modulo; //Cambiar por el valor de 256 bits
             else if (canal == 3)
-                resultadoOperacion = (R0 * m2 * k1_inv * k3 ) % modulo; //Emisor
+                resultadoOperacion = (ToBigInteger(valorRecibido) * m2 * k1_inv * k3 ) % modulo; //Cambiar por el valor de 256 bits
             else if (canal == 4)
-                resultadoOperacion = (R0 * m2 * k1_inv * k2) % modulo; //Emisor
+                resultadoOperacion = (ToBigInteger(valorRecibido) * m2 * k1_inv * k2) % modulo; //Cambiar por el valor de 256 bits
             else if (canal == 5)
-                resultadoOperacion = (R0 * m2 * k1_inv * k3) % modulo; //Receptor
+                resultadoOperacion = (ToBigInteger(valorRecibido) * m2 * k1_inv * k3) % modulo;
             else if (canal == 6)
-                resultadoOperacion = (R0 * m2 * k1_inv * k2) % modulo; //Receptor
+                resultadoOperacion = (ToBigInteger(valorRecibido) * m2 * k1_inv * k2) % modulo;
 
             socket.Connect(direccion);
             info = Encoding.Default.GetBytes(resultadoOperacion.ToString());
@@ -396,7 +395,7 @@ namespace Protocolo1
                     contenido = File.ReadAllText(fichero);
                     string[] lineas = contenido.Split(Environment.NewLine.ToCharArray());
 
-                    for (int i=0; i<7; i++)
+                    for (int i=0; i<6; i++)
                     {
                         if (i == 0)
                             n = ToBigInteger(lineas[i]);
@@ -404,11 +403,10 @@ namespace Protocolo1
                             k1 = ToBigInteger(lineas[i]);
                         if (i == 4)
                             k2 = ToBigInteger(lineas[i]);
-                        if (i == 6)
+                        if (i == 5)
                             k3 = ToBigInteger(lineas[i]);
                     }
 
-                    
                 }
 
             }

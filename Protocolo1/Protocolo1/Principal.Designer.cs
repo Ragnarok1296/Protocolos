@@ -44,8 +44,12 @@
             this.lblBits = new System.Windows.Forms.Label();
             this.cbBits = new System.Windows.Forms.ComboBox();
             this.txtbNa = new System.Windows.Forms.TextBox();
+            this.txtbN = new System.Windows.Forms.TextBox();
+            this.txtbKaKb = new System.Windows.Forms.TextBox();
+            this.txtbKaKbInv = new System.Windows.Forms.TextBox();
+            this.lblN = new System.Windows.Forms.Label();
+            this.lblKaKb = new System.Windows.Forms.Label();
             this.lblNa = new System.Windows.Forms.Label();
-<<<<<<< HEAD
             this.lblKaKbInv = new System.Windows.Forms.Label();
             this.lblCanal1 = new System.Windows.Forms.Label();
             this.txtbCanal1 = new System.Windows.Forms.TextBox();
@@ -56,8 +60,6 @@
             this.pbxCerrar = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-=======
->>>>>>> 8e187052909663920f78be79dddb7d34be62f477
             this.gbTiempos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxCerrar)).BeginInit();
             this.SuspendLayout();
@@ -221,18 +223,13 @@
             // 
             // txtbNa
             // 
-<<<<<<< HEAD
             this.txtbNa.Font = new System.Drawing.Font("Century", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtbNa.Location = new System.Drawing.Point(386, 358);
-=======
-            this.txtbNa.Location = new System.Drawing.Point(26, 385);
->>>>>>> 8e187052909663920f78be79dddb7d34be62f477
             this.txtbNa.Multiline = true;
             this.txtbNa.Name = "txtbNa";
-            this.txtbNa.Size = new System.Drawing.Size(326, 53);
+            this.txtbNa.Size = new System.Drawing.Size(295, 53);
             this.txtbNa.TabIndex = 8;
             // 
-<<<<<<< HEAD
             // txtbN
             // 
             this.txtbN.Font = new System.Drawing.Font("Century", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -285,18 +282,11 @@
             this.lblNa.AutoSize = true;
             this.lblNa.Font = new System.Drawing.Font("Century", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNa.Location = new System.Drawing.Point(383, 339);
-=======
-            // lblNa
-            // 
-            this.lblNa.AutoSize = true;
-            this.lblNa.Location = new System.Drawing.Point(23, 369);
->>>>>>> 8e187052909663920f78be79dddb7d34be62f477
             this.lblNa.Name = "lblNa";
             this.lblNa.Size = new System.Drawing.Size(26, 16);
             this.lblNa.TabIndex = 14;
             this.lblNa.Text = "Na";
             // 
-<<<<<<< HEAD
             // lblKaKbInv
             // 
             this.lblKaKbInv.AutoSize = true;
@@ -400,13 +390,10 @@
             this.button1.TabIndex = 27;
             this.button1.UseVisualStyleBackColor = false;
             // 
-=======
->>>>>>> 8e187052909663920f78be79dddb7d34be62f477
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1027, 423);
             this.Controls.Add(this.pbxCerrar);
             this.Controls.Add(this.label1);
@@ -418,11 +405,13 @@
             this.Controls.Add(this.txtbCanal1);
             this.Controls.Add(this.lblCanal1);
             this.Controls.Add(this.lblKaKbInv);
-=======
-            this.ClientSize = new System.Drawing.Size(379, 453);
->>>>>>> 8e187052909663920f78be79dddb7d34be62f477
             this.Controls.Add(this.lblNa);
+            this.Controls.Add(this.lblKaKb);
+            this.Controls.Add(this.lblN);
+            this.Controls.Add(this.txtbKaKbInv);
+            this.Controls.Add(this.txtbKaKb);
             this.Controls.Add(this.txtbNa);
+            this.Controls.Add(this.txtbN);
             this.Controls.Add(this.cbBits);
             this.Controls.Add(this.lblBits);
             this.Controls.Add(this.btnEmpezar);
@@ -461,8 +450,12 @@
         private System.Windows.Forms.Label lblBits;
         private System.Windows.Forms.ComboBox cbBits;
         private System.Windows.Forms.TextBox txtbNa;
+        private System.Windows.Forms.TextBox txtbN;
+        private System.Windows.Forms.TextBox txtbKaKb;
+        private System.Windows.Forms.TextBox txtbKaKbInv;
+        private System.Windows.Forms.Label lblN;
+        private System.Windows.Forms.Label lblKaKb;
         private System.Windows.Forms.Label lblNa;
-<<<<<<< HEAD
         private System.Windows.Forms.Label lblKaKbInv;
         private System.Windows.Forms.Label lblCanal1;
         private System.Windows.Forms.TextBox txtbCanal1;
@@ -473,7 +466,5 @@
         private System.Windows.Forms.PictureBox pbxCerrar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
-=======
->>>>>>> 8e187052909663920f78be79dddb7d34be62f477
     }
 }
