@@ -72,12 +72,16 @@ namespace Protocolo1
             if (cbCoS.SelectedIndex == 0)
             {
                 lblIP.Text = "IP de Bob:";
-                
+                lblKaKb.Text = "Ka";
+                lblKaKbInv.Text = "Ka Inversa";
+                lblNa.Text = "Na";
             }
             else if (cbCoS.SelectedIndex == 1)
             {
                 lblIP.Text = "IP de Alice:";
-                
+                lblKaKb.Text = "Kb";
+                lblKaKbInv.Text = "Kb Inversa";
+                lblNa.Text = "Nb";
             }
                 
         }
@@ -93,13 +97,20 @@ namespace Protocolo1
                 {
                     Alice();
 
-                    
+                    txtbN.Text = n.ToString();
+                    txtbNa.Text = na.ToString();
+                    txtbKaKb.Text = ka.ToString();
+                    txtbKaKbInv.Text = ka_inv.ToString();
                     txtbNaNb.Text = na_nb.ToString();
                 }
                 else if (cbCoS.SelectedIndex == 1)
                 {
                     Bob();
-                    
+
+                    txtbN.Text = n.ToString();
+                    txtbNa.Text = nb.ToString();
+                    txtbKaKb.Text = kb.ToString();
+                    txtbKaKbInv.Text = kb_inv.ToString();
                     txtbNaNb.Text = na_nb.ToString();
                 }
                 
@@ -131,9 +142,9 @@ namespace Protocolo1
             //Segundo canal (Recibir)
             BigInteger aux = recibir();
             na_nb = (aux * ka_inv) % n;
-
-
-            recibir();
+            txtbCanal2.Text = aux.ToString();
+            
+            txtCanal21.Text = recibir().ToString();
 
             //Tercer canal (Enviar)
             enviar(4);
@@ -161,7 +172,7 @@ namespace Protocolo1
             start = new TimeSpan(DateTime.Now.Ticks);
 
             //Primer canal (recibir)
-            recibir();
+            txtbCanal1.Text = recibir().ToString();
 
             //Segundo canal (Enviar)
             enviar(2);
@@ -174,6 +185,7 @@ namespace Protocolo1
 
             //Se obtiene Na*Nb
             na_nb = (aux * kb_inv) % n;
+            txtbCanal3.Text = aux.ToString();
 
             //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
