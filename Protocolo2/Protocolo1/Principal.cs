@@ -47,7 +47,7 @@ namespace Protocolo1
         {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
-            this.Text = "Protocolo secreto compartido (" + ipAddress + ")";
+            label2.Text = "Protocolo secreto compartido (" + ipAddress + ")";
         }
 
         private void btnEmpezar_Click(object sender, EventArgs e)
@@ -380,5 +380,130 @@ namespace Protocolo1
         }
 
         #endregion
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbCanal3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCanal3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbCanal2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCanal2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbCanal1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCanal1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblKaKbInv_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblNa_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblKaKb_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblN_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbKaKbInv_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbKaKb_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbNa_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbN_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbBits_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblBits_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbIP_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblIP_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCoS_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gbTiempos_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCanal21_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblNaNb_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtbNaNb_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pbxCerrar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
