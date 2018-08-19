@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1711CA1F-6642-44AC-A387-C196407A0A7B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Protocolo1</RootNamespace>
-    <AssemblyName>Protocolo1</AssemblyName>
+    <RootNamespace>Protocolo2</RootNamespace>
+    <AssemblyName>Protocolo2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

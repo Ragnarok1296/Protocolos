@@ -1,36 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Numerics;
-using System.Diagnostics;
-using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
+using System.Drawing;
 
 namespace Protocolo1
 {
     public partial class Principal : Form
     {
+
+        Protocolo4.WSOperacion.WSOperacionesSoapClient operaciones;
+
         String valorRecibido;
         BigInteger resultadoOperacion;
 
         string ipAddress = "";
 
         //Llaves
-        BigInteger na;
-        BigInteger ka;
-        BigInteger ka_inv;
-        BigInteger kb;
-        BigInteger kb_inv;
+        BigInteger modulo;
+
+        BigInteger k1;
+        BigInteger k2;
+        BigInteger k3;
+        BigInteger k1_inv;
+        BigInteger k2_inv;
+        BigInteger k3_inv;
         BigInteger n;
+
+        BigInteger m1;
+        BigInteger m2;
+
+        BigInteger llavePublica1Contrario;
+        BigInteger llavePublica2Contrario;
+
+        BigInteger R0;
+        BigInteger R1;
+        BigInteger R2;
+        BigInteger R3;
+        BigInteger R4;
+        BigInteger R5;
+        BigInteger R6;
         //N es un numero no primo 
         //ka y kb pueden ser negativos 
 
@@ -47,12 +64,13 @@ namespace Protocolo1
 
         private void Principal_Load(object sender, EventArgs e)
         {
+            operaciones = new Protocolo4.WSOperacion.WSOperacionesSoapClient();
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
-            label1.Text = "Protocolo basico ("+ ipAddress +")";
-            this.Size = new Size(400, 460);
-            pbxCerrar.Location = new Point(349, 5);
-            cbBits.SelectedIndex = 0;
+            label1.Text = "Protocolo llave publica (" + ipAddress + ")";
+
+            this.Size = new Size(397, 518);
+            pbxCerrar.Location = new Point(346, 5);
             cbCoS.SelectedIndex = 0;
         }
 
@@ -65,24 +83,9 @@ namespace Protocolo1
                 protocolo();
                 btnEmpezar.Enabled = true;
             }
+
         }
 
-        private void cbCoS_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            if (cbCoS.SelectedIndex == 0)
-            {
-                lblIP.Text = "IP de Bob:";
-                lblKaKb.Text = "Ka";
-                lblKaKbInv.Text = "Ka Inversa";
-            }
-            else if (cbCoS.SelectedIndex == 1)
-            {
-                lblIP.Text = "IP de Alice:";
-                lblKaKb.Text = "Kb";
-                lblKaKbInv.Text = "Kb Inversa";
-            }                
-        }
 
         #region Protocolo
 
@@ -90,47 +93,51 @@ namespace Protocolo1
         {
             try
             {
+                if (!operaciones.VerificarCertificado(txtbTelefono.Text))
+                {
+                    MessageBox.Show("Esta persona no tiene una verificacion adecuada");
+                    return;
+                } else
+                    MessageBox.Show("Esta persona paso la verificacion");
+
+                DataTable dt = (DataTable)JsonConvert.DeserializeObject(operaciones.obtenerLlavesPublica(txtbTelefono.Text), typeof(DataTable));
+
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Esta persona no esta certificada");
+                    return;
+                }
+
+                llavePublica1Contrario = ToBigInteger(dt.Rows[0].ItemArray[0].ToString());
+                llavePublica2Contrario = ToBigInteger(dt.Rows[1].ItemArray[0].ToString());
+
                 if (cbCoS.SelectedIndex == 0)
                 {
-                    Alice();
+                    Emisor();
 
-                    txtbN.Text = n.ToString();
-                    txtbNa.Text = na.ToString();
-                    txtbKaKb.Text = ka.ToString();
-                    txtbKaKbInv.Text = ka_inv.ToString();
+
                 }
                 else if (cbCoS.SelectedIndex == 1)
                 {
-                    Bob();
+                    Receptor();
 
-                    txtbN.Text = n.ToString();
-                    txtbNa.Text = na.ToString();
-                    txtbKaKb.Text = kb.ToString();
-                    txtbKaKbInv.Text = kb_inv.ToString();
                 }
-                
+
             }
             catch (Exception e)
             {
                 MessageBox.Show("Error al conectar, revise que la IP sea correcta y desactive el firewall");
             }
 
-            btnEmpezar.Enabled = false;
-            Thread.Sleep(2000);
-            btnEmpezar.Enabled = false;
-
         }
 
-        public void Alice()
+        public void Emisor()
         {
             //Generar numeros aleatorios y rectificar con euclides, asi mismo se verifica el tiempo
             start = new TimeSpan(DateTime.Now.Ticks);
             numAleatorio();
             stop = new TimeSpan(DateTime.Now.Ticks);
             lblRContador1.Text = (stop.Subtract(start).TotalMilliseconds).ToString();
-            
-            //Canal 0 envio de modulo(enviar)
-            enviar(0);
 
             //Se inicia el contador para el envio de datos
             start = new TimeSpan(DateTime.Now.Ticks);
@@ -140,11 +147,39 @@ namespace Protocolo1
             txtbCanal1.Text = resultadoOperacion.ToString();
 
             //Segundo canal (Recibir)
-            txtbCanal2.Text = recibir().ToString();
+            R0 = recibir();
+
+            R1 = (R0 * llavePublica1Contrario) % modulo;
+            R2 = (R0 * llavePublica2Contrario) % modulo;
+
+            txtbCanal2.Text = R0.ToString();
 
             //Tercer canal (Enviar)
             enviar(3);
             txtbCanal3.Text = resultadoOperacion.ToString();
+
+            //cuarto canal (Enviar)
+            enviar(4);
+            txtbCanal4.Text = resultadoOperacion.ToString();
+
+            //quinto canal (Recibir)
+            R3 = recibir();
+
+            R5 = (R3 * R1 * k2 * k3) % modulo;
+
+            txtbCanal5.Text = R3.ToString();
+
+            //sexto canal (Recibir)
+            R4 = recibir();
+
+            R6 = (R4 * R2 * k2 * k3) % modulo;
+
+            txtbCanal6.Text = R4.ToString();
+
+            if (R5 == R6)
+                R5 = ((R6 * m2 * n) % modulo);
+
+            txtbResultado.Text = R5.ToString();
 
             //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
@@ -153,12 +188,8 @@ namespace Protocolo1
             lblRContador3.Text = (Convert.ToDouble(lblRContador1.Text) + Convert.ToDouble(lblRContador2.Text)).ToString();
         }
 
-        public void Bob()
+        public void Receptor()
         {
-
-            //Canal 0 Recibir modulo(Recibir)
-            n = recibir();
-
             //Generar numeros aleatorios y rectificar con euclides, asi mismo se verifica el tiempo
             start = new TimeSpan(DateTime.Now.Ticks);
             numAleatorio();
@@ -168,19 +199,43 @@ namespace Protocolo1
             //Se inicia el contador para el envio de datos
             start = new TimeSpan(DateTime.Now.Ticks);
 
-            //Primer canal (recibir)
-            txtbCanal1.Text = recibir().ToString();
+            //Canal 1 (recibir)
+            R0 = recibir();
 
-            //Segundo canal (Enviar)
+            R1 = (R0 * llavePublica1Contrario) % modulo;
+            R2 = (R0 * llavePublica2Contrario) % modulo;
+
+            txtbCanal1.Text = R0.ToString();
+
+            //segundo canal (Enviar)
             enviar(2);
             txtbCanal2.Text = resultadoOperacion.ToString();
 
-            //Tercer canal (recibir)
-            BigInteger aux = recibir();
+            //quinto canal (Recibir)
+            R3 = recibir();
 
-            //Se obtiene Na
-            na = (aux * kb_inv) % n;
-            txtbCanal3.Text = aux.ToString();
+            txtbCanal3.Text = R3.ToString();
+
+            //sexto canal (Recibir)
+            R4 = recibir();
+
+            txtbCanal4.Text = R4.ToString();
+
+            //quinto canal (Enviar)
+            enviar(5);
+            txtbCanal5.Text = resultadoOperacion.ToString();
+
+            //sexto canal (Enviar)
+            enviar(6);
+            txtbCanal6.Text = resultadoOperacion.ToString();
+
+            R5 = (R3 * R1 * k2 * k3) % modulo;
+            R6 = (R4 * R2 * k2 * k3) % modulo;
+
+            if (R5 == R6)
+                R5 = ((R6 * m2 * n) % modulo);
+
+            txtbResultado.Text = R5.ToString();
 
             //Se imprime el tiempo
             stop = new TimeSpan(DateTime.Now.Ticks);
@@ -191,49 +246,26 @@ namespace Protocolo1
 
         private void numAleatorio()
         {
-            if (cbCoS.SelectedIndex == 0) {
-                
-                //Se obtiene el modulo
-                do {
-                    n = binarioADecimal(binario(Convert.ToInt16(cbBits.SelectedItem.ToString())));
-                } while(esPrimo(n));
-                
-                // Se genera na que es un no invertible
-                do {
-                    na = RandomBigInteger(2, n);
-                } while (Euclides.moduloInverso(n, na));
+            // Se genera na que es un no invertible
+            do
+            {
+                m1 = RandomBigInteger(2, modulo);
+            } while (Euclides.moduloInverso(modulo, m1));
 
-                bool bandera;
-                // Se genera ka que es un invertible
-                do {
-                    ka = RandomBigInteger(2, n);
 
-                    bandera = Euclides.moduloInverso(n, ka);
-                    
-                        ka_inv = Euclides.inv;
+            txtbM1.Text = m1.ToString();
 
-                } while (!bandera);
-                
-            }
-            else if (cbCoS.SelectedIndex == 1) {
+            // Se genera na que es un no invertible
+            do
+            {
+                m2 = RandomBigInteger(2, modulo);
+            } while (Euclides.moduloInverso(modulo, m2));
 
-                bool bandera;
-                // Se genera ka que es un invertible
-                do
-                {
-                    kb = RandomBigInteger(2, n);
 
-                    bandera = Euclides.moduloInverso(n, kb);
-                    
-                        kb_inv = Euclides.inv;
-
-                } while (!bandera);
-                
-                
-            }
-
+            txtbM2.Text = m2.ToString();
+            
         }
-        
+
         private String binario(int bits)
         {
             Random rnd = new Random();
@@ -306,7 +338,7 @@ namespace Protocolo1
 
 
         #region Sockets
-        
+
         private void enviar(int canal)
         {
             byte[] info = new byte[255];
@@ -315,14 +347,19 @@ namespace Protocolo1
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint direccion = new IPEndPoint(IPAddress.Parse(txtbIP.Text), 8000);
 
-            if (canal == 0)
-                resultadoOperacion = n;
-            else if (canal == 1)
-                resultadoOperacion = (ka * na) % n; //Cambiar por el valor de 256 bits
+
+            if (canal == 1)
+                resultadoOperacion = (m1 * k2_inv * k3_inv) % modulo; //Emisor
             else if (canal == 2)
-                resultadoOperacion = (ToBigInteger(valorRecibido) * kb) % n; //Cambiar por el valor de 256 bits
+                resultadoOperacion = (m1 * k2_inv * k3_inv) % modulo; //Receptor
             else if (canal == 3)
-                resultadoOperacion = (ToBigInteger(valorRecibido) * ka_inv) % n; //Cambiar por el valor de 256 bits
+                resultadoOperacion = (R0 * m2 * k1_inv * k3) % modulo; //Emisor
+            else if (canal == 4)
+                resultadoOperacion = (R0 * m2 * k1_inv * k2) % modulo; //Emisor
+            else if (canal == 5)
+                resultadoOperacion = (R0 * m2 * k1_inv * k3) % modulo; //Receptor
+            else if (canal == 6)
+                resultadoOperacion = (R0 * m2 * k1_inv * k2) % modulo; //Receptor
 
             socket.Connect(direccion);
             info = Encoding.Default.GetBytes(resultadoOperacion.ToString());
@@ -349,11 +386,12 @@ namespace Protocolo1
             size = escuchar.Receive(info, 0, info.Length, 0);
             Array.Resize(ref info, size);
             valorRecibido = Encoding.Default.GetString(info);
-            
+
             socket.Close();
 
-            return ToBigInteger(valorRecibido) ;
+            return ToBigInteger(valorRecibido);
         }
+
 
         public BigInteger ToBigInteger(string value)
         {
@@ -367,6 +405,57 @@ namespace Protocolo1
 
         #endregion
 
+        private void btnCargarLlaves_Click(object sender, EventArgs e)
+        {
+            if (ofdAbrir.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                string fichero = ofdAbrir.FileName;
+                string contenido = String.Empty;
+
+                if (File.Exists(fichero))
+                {
+                    contenido = File.ReadAllText(fichero);
+                    string[] lineas = contenido.Split(Environment.NewLine.ToCharArray());
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (i == 0)
+                            n = ToBigInteger(lineas[i]);
+                        if (i == 2)
+                            k1 = ToBigInteger(lineas[i]);
+                        if (i == 4)
+                            k2 = ToBigInteger(lineas[i]);
+                        if (i == 6)
+                            k3 = ToBigInteger(lineas[i]);
+                    }
+
+                    modulo = ToBigInteger(operaciones.obtenerModulo(1));
+                    txtbN.Text = modulo.ToString();
+
+                    txtbNaNb.Text = n.ToString();
+
+                    Euclides.moduloInverso(modulo, k1);
+                    k1_inv = Euclides.inv;
+                    Euclides.moduloInverso(modulo, k2);
+                    k2_inv = Euclides.inv;
+                    Euclides.moduloInverso(modulo, k3);
+                    k3_inv = Euclides.inv;
+
+                    txtbK1.Text = k1.ToString();
+                    txtbK1Inv.Text = k1_inv.ToString();
+
+                    txtbK2.Text = k2.ToString();
+                    txtbK2Inv.Text = k2_inv.ToString();
+
+                    txtbK3.Text = k3.ToString();
+                    txtbK3Inv.Text = k3_inv.ToString();
+                }
+
+            }
+
+        }
+
         private void pbxCerrar_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -375,33 +464,38 @@ namespace Protocolo1
         private void btnDatos_Click(object sender, EventArgs e)
         {
             if (datos) {
-                this.Size = new Size(400, 460);
-                pbxCerrar.Location = new Point(349, 5);
+                this.Size = new Size(397, 518);
+                pbxCerrar.Location = new Point(346, 5);
                 datos = false;
                 canales = false;
-                btnDatos.BackgroundImage = Properties.Resources.proximo;
-                btnCanales.BackgroundImage = Properties.Resources.proximo;
+                btnDatos.BackgroundImage = Protocolo4.Properties.Resources.proximo;
+                btnCanales.BackgroundImage = Protocolo4.Properties.Resources.proximo;
             } else {
-                this.Size = new Size(757, 460);
-                pbxCerrar.Location = new Point(703, 5);
+                this.Size = new Size(795, 668);
+                pbxCerrar.Location = new Point(735, 4);
                 datos = true;
-                btnDatos.BackgroundImage = Properties.Resources.espalda;
+                btnDatos.BackgroundImage = Protocolo4.Properties.Resources.espalda;
             }
         }
 
-        private void btnCanales_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
             if (canales) {
-                this.Size = new Size(757, 460);
-                pbxCerrar.Location = new Point(703, 5);
+                this.Size = new Size(795, 668);
+                pbxCerrar.Location = new Point(735, 4);
                 canales = false;
-                btnCanales.BackgroundImage = Properties.Resources.proximo;
+                btnCanales.BackgroundImage = Protocolo4.Properties.Resources.proximo;
             } else {
-                this.Size = new Size(1162, 460);
-                pbxCerrar.Location = new Point(1115, 5);
+                this.Size = new Size(1194, 668);
+                pbxCerrar.Location = new Point(1150, 5);
                 canales = true;
-                btnCanales.BackgroundImage = Properties.Resources.espalda;
+                btnCanales.BackgroundImage = Protocolo4.Properties.Resources.espalda;
             }
+        }
+
+        private void cbCoS_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
